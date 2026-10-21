@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Favorite Person 💗</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --pink: #ff79a9;
+  --light: #fff0f6;
+  --dark: #a83e70;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(135deg, #ffe0ec, #fce7ff, #e7f4ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #873e65;
+}
+
+.heart-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -40px;
+  animation: floatUp linear infinite;
+  opacity: .55;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0) rotate(0); }
+  to { transform: translateY(-115vh) rotate(360deg); }
+}
+
+.card {
+  position: relative;
+  z-index: 2;
+  width: min(92%, 490px);
+  min-height: 420px;
+  padding: 34px 24px;
+  background: rgba(255,255,255,.78);
+  border: 2px solid white;
+  border-radius: 32px;
+  box-shadow: 0 15px 55px #dc83b53b;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px);
+}
+
+.page {
+  width: 100%;
+  animation: appear .65s ease;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(18px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.top-emoji {
+  font-size: 64px;
+  margin-bottom: 12px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+h1 {
+  font-family: 'Pacifico', cursive;
+  font-weight: normal;
+  font-size: clamp(27px, 7vw, 38px);
+  line-height: 1.4;
+  margin: 8px 0 12px;
+  color: #e75491;
+}
+
+p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.buttons {
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  min-height: 65px;
+  flex-wrap: wrap;
+}
+
+button {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  padding: 14px 28px;
+  transition: transform .25s, padding .25s, opacity .25s;
+}
+
+.yes-btn {
+  color: white;
+  background: linear-gradient(135deg, #ff6fa5, #ff91bd);
+  box-shadow: 0 7px 18px #ff79a94d;
+  position: relative;
+  z-index: 3;
+}
+
+.yes-btn:hover {
+  filter: brightness(1.05);
+}
+
+.no-btn {
+  color: #ad6586;
+  background: #ffe1ed;
+  border: 1px solid #ffc5dc;
+  white-space: nowrap;
+}
+
+.small-note {
+  margin-top: 22px;
+  font-size: 12px;
+  opacity: .75;
+}
+
+.progress {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #ee85b0;
+  margin-bottom: 10px;
+}
+
+/* GIFT BOXES */
+
+.gifts {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.gift {
+  width: 125px;
+  padding: 12px 5px;
+  background: #fff0f6;
+  border: 2px solid white;
+  border-radius: 22px;
+  cursor: pointer;
+  transition: transform .3s;
+}
+
+.gift:hover {
+  transform: translateY(-8px) rotate(-3deg);
+}
+
+.gift-icon {
+  font-size: 67px;
+  display: block;
+  animation: wiggle 2s infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  50% { transform: rotate(5deg); }
+}
+
+.gift-label {
+  font-size: 13px;
+  margin-top: 8px;
+  display: block;
+  color: #a83e70;
+}
+
+.hint {
+  font-size: 12px;
+  margin-top: 18px;
+}
+
+/* GIFT REVEAL */
+
+#reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: linear-gradient(135deg, #ffdfed, #f7e5ff);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 22px;
+  text-align: center;
+  overflow: hidden;
+}
+
+#reveal.show {
+  display: flex;
+  animation: appear .5s ease;
+}
+
+.reveal-title {
+  font-family: 'Pacifico', cursive;
+  font-size: clamp(27px, 7vw, 42px);
+  color: #e75491;
+  z-index: 2;
+}
+
+.reveal-message {
+  max-width: 380px;
+  z-index: 2;
+}
+
+.big-bouquet {
+  font-size: clamp(90px, 24vw, 145px);
+  animation: bouquetPop .7s cubic-bezier(.2, 1.8, .5, 1);
+  filter: drop-shadow(0 8px 12px #d879a433);
+}
+
+@keyframes bouquetPop {
+  from { transform: scale(0) rotate(-25deg); }
+  to { transform: scale(1) rotate(0); }
+}
+
+.reveal-emoji {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  font-size: 30px;
+  pointer-events: none;
+  animation: burst 1.8s ease-out forwards;
+}
+
+@keyframes burst {
+  0% {
+    transform: translate(-50%, -50%) scale(.2) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+      calc(-50% + var(--x)),
+      calc(-50% + var(--y))
+    ) rotate(540deg) scale(1.3);
+    opacity: 0;
+  }
+}
+
+.close-btn {
+  margin-top: 25px;
+  background: white;
+  color: #d84f8c;
+  border: 1px solid #ffc5dc;
+  z-index: 3;
+}
+
+@media (max-width: 380px) {
+  .card { padding: 27px 16px; min-height: 400px; }
+  .gifts { gap: 12px; }
+  .gift { width: 112px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="heart-bg" id="heartBg"></div>
+
+<main class="card" id="mainCard">
+
+  <!-- FIRST QUESTION -->
+  <section class="page" id="page1">
+    <div class="progress">♡ 01 / 03 ♡</div>
+    <div class="top-emoji">🧸💗</div>
+    <h1>Are you my best friend?</h1>
+    <p>Be honest... because you are someone really special to me! 🥹💕</p>
+
+    <div class="buttons">
+      <button class="yes-btn" id="yes1" onclick="nextPage(2)">
+        YES! 💖
+      </button>
+      <button class="no-btn" id="no1" onclick="shrinkNo(1)">
+        No 🙈
+      </button>
+    </div>
+
+    <div class="small-note" id="note1">
+      Choose wisely, bestie! 🎀
+    </div>
+  </section>
+
+  <!-- SECOND QUESTION -->
+  <section class="page" id="page2" hidden>
+    <div class="progress">♡ 02 / 03 ♡</div>
+    <div class="top-emoji">🥺💘</div>
+    <h1>Do you love me?</h1>
+    <p>Like, a little? A lot? INFINITY? ♾️💕</p>
+
+    <div class="buttons">
+      <button class="yes-btn" id="yes2" onclick="nextPage(3)">
+        YES, ALWAYS! 💗
+      </button>
+      <button class="no-btn" id="no2" onclick="shrinkNo(2)">
+        No 🙃
+      </button>
+    </div>
+
+    <div class="small-note" id="note2">
+      Psst... the YES button is cute! 🌷
+    </div>
+  </section>
+
+  <!-- GIFT SELECTION -->
+  <section class="page" id="page3" hidden>
+    <div class="progress">♡ 03 / 03 ♡</div>
+    <div class="top-emoji">🎀🎁</div>
+    <h1>Two little surprises!</h1>
+    <p>I made something special just for you. Open a gift, cutie! 🥹💞</p>
+
+    <div class="gifts">
+      <button class="gift" onclick="openGift('flowers')">
+        <span class="gift-icon">🎁</span>
+        <span class="gift-label">Gift No. 1 🌷</span>
+      </button>
+
+      <button class="gift" onclick="openGift('hearts')">
+        <span class="gift-icon">🎁</span>
+        <span class="gift-label">Gift No. 2 💕</span>
+      </button>
+    </div>
+
+    <div class="hint">✨ Tap either box to reveal your surprise ✨</div>
+  </section>
+
+</main>
+
+<!-- FULL-SCREEN GIFT REVEAL -->
+<div id="reveal">
+  <div class="reveal-title" id="revealTitle"></div>
+  <div class="big-bouquet" id="revealArt"></div>
+  <p class="reveal-message" id="revealMessage"></p>
+  <button class="close-btn" onclick="closeGift()">
+    Back to my gifts 🎁
+  </button>
+</div>
+
+<script>
+let yesScale = [1, 1];
+let noScale = [1, 1];
+
+const noMessages = [
+  [
+    "Are you sureee? 🥺",
+    "Think again, bestie! 💕",
+    "Hehe, try YES! 🌸",
+    "The YES button is waiting! 💗"
+  ],
+  [
+    "Really? 🥹",
+    "My heart says YES! 💖",
+    "Pretty please? 🎀",
+    "One little YES? 🌷"
+  ]
+];
+
+let noClicks = [0, 0];
+
+function shrinkNo(which) {
+  const index = which - 1;
+  const yes = document.getElementById("yes" + which);
+  const no = document.getElementById("no" + which);
+  const note = document.getElementById("note" + which);
+
+  noClicks[index]++;
+
+  // YES grows each time NO is tapped
+  yesScale[index] = Math.min(yesScale[index] + 0.18, 2.3);
+  yes.style.transform = `scale(${yesScale[index]})`;
+
+  // NO becomes smaller, but stays clickable
+  noScale[index] = Math.max(noScale[index] * 0.78, 0.25);
+  no.style.transform = `scale(${noScale[index]})`;
+  no.style.opacity = Math.max(noScale[index], 0.55);
+
+  // Change the NO text to make it playful
+  const messages = noMessages[index];
+  no.textContent =
+    messages[Math.min(noClicks[index] - 1, messages.length - 1)];
+
+  note.textContent = noClicks[index] >= 4
+    ? "Okay okay, I'll keep asking! 😂💗"
+    : "Hehe, are you really sure? 🥹";
+}
+
+function nextPage(pageNumber) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.hidden = true;
+  });
+
+  document.getElementById("page" + pageNumber).hidden = false;
+
+  // Replay entrance animation
+  const page = document.getElementById("page" + pageNumber);
+  page.style.animation = "none";
+  void page.offsetWidth;
+  page.style.animation = "appear .65s ease";
+}
+
+// Floating background hearts
+const heartBg = document.getElementById("heartBg");
+
+for (let i = 0; i < 22; i++) {
+  const heart = document.createElement("span");
+  heart.className = "floating-heart";
+  heart.textContent = ["♡", "💕", "💗", "💖", "🌸"][i % 5];
+  heart.style.left = Math.random() * 100 + "%";
+  heart.style.fontSize = (15 + Math.random() * 22) + "px";
+  heart.style.animationDuration = (7 + Math.random() * 10) + "s";
+  heart.style.animationDelay = (-Math.random() * 12) + "s";
+  heartBg.appendChild(heart);
+}
+
+// Gift opening
+function openGift(type) {
+  const reveal = document.getElementById("reveal");
+  const title = document.getElementById("revealTitle");
+  const art = document.getElementById("revealArt");
+  const message = document.getElementById("revealMessage");
+
+  reveal.classList.remove("show");
+  void reveal.offsetWidth;
+
+  if (type === "flowers") {
+    title.textContent = "Flowers for my favorite person! 🌸";
+    art.textContent = "💐";
+    message.textContent =
+      "A little bouquet for a person who makes life more beautiful. " +
+      "May your days always be filled with flowers, smiles and happiness! 🌷💗";
+
+    flowerExplosion();
+  } else {
+    title.textContent = "A million hearts for you! 💖";
+    art.textContent = "💝";
+    message.textContent =
+      "If every heart were a little hug, you'd receive a million of them! " +
+      "Sending you endless love, happiness and the biggest virtual hug! 🫶💕";
+
+    heartExplosion();
+  }
+
+  reveal.classList.add("show");
+}
+
+function flowerExplosion() {
+  burstEmojis([
+    "🌸", "🌷", "🌹", "🌼", "🌺",
+    "💐", "🌻", "🌷", "✨", "💗"
+  ], 36);
+}
+
+function heartExplosion() {
+  burstEmojis([
+    "💗", "💖", "💕", "💘", "💝",
+    "❤️", "🩷", "💓", "💞", "✨"
+  ], 45);
+}
+
+function burstEmojis(emojis, count) {
+  const reveal = document.getElementById("reveal");
+
+  for (let i = 0; i < count; i++) {
+    const particle = document.createElement("span");
+    particle.className = "reveal-emoji";
+    particle.textContent = emojis[i % emojis.length];
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 100 + Math.random() * 300;
+
+    particle.style.setProperty(
+      "--x", Math.cos(angle) * distance + "px"
+    );
+    particle.style.setProperty(
+      "--y", Math.sin(angle) * distance + "px"
+    );
+    particle.style.animationDelay = Math.random() * 0.25 + "s";
+
+    reveal.appendChild(particle);
+    setTimeout(() => particle.remove(), 2300);
+  }
+}
+
+function closeGift() {
+  document.getElementById("reveal").classList.remove("show");
+}
+</script>
+
+</body>
+</html>
